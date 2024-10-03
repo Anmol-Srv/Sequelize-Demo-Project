@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "demo_user",
+    "password": "password123",
+    "database": "sequelize_demo",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "demo_user",
+    "password": "password123",
+    "database": "sequelize_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "demo_user",
+    "password": "password123",
+    "database": "sequelize_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
