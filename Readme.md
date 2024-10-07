@@ -949,7 +949,7 @@ The **Post-Tag Association Routes** manage the Many-to-Many relationship between
 
 ### **1. Add a Tag to a Post**
 
-- **Endpoint**: `POST /posts/:postId/tags`
+- **Endpoint**: `POST /post-tags/:postId/tags`
 - **Description**: This route allows you to associate an existing tag with a post.
 - **Request Body**:
   ```json
@@ -987,7 +987,7 @@ The **Post-Tag Association Routes** manage the Many-to-Many relationship between
 
 ### **2. Remove a Tag from a Post**
 
-- **Endpoint**: `DELETE /posts/:postId/tags`
+- **Endpoint**: `DELETE /post-tags/:postId/tags`
 - **Description**: This route allows you to remove an existing tag association from a post.
 - **Request Body**:
   ```json

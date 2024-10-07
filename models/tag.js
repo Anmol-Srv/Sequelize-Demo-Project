@@ -14,20 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    // Defining associations for the Tag model.
-    // Associations describe the relationships between this model and other models, allowing us to query related data.
-
-    Tag.associate = function (models) {
-        // Associating Tag with Post in a many-to-many relationship, using the PostTag join table.
-        // - Tag.belongsToMany(models.Post): Indicates that each Tag can be linked to multiple Posts.
-        // - through: models.PostTag specifies that the relationship is managed by the PostTag table.
-        // - foreignKey: 'tagId' sets the key in the PostTag table that references the Tag.
-        // Scenario:
-        // - This association enables posts to be organized by multiple tags.
-        // - It also allows tags to group various posts under the same category, such as "Technology" or "Health".
-        Tag.belongsToMany(models.Post, { through: models.PostTag, foreignKey: 'tagId' });
-    };
-
     // Returning the Tag model for use throughout the application.
     // By exporting this model, we can interact with the Tag table, perform CRUD operations, and access associations.
     return Tag;

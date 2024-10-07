@@ -22,19 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    // Defining associations for the Profile model.
-    // Associations describe how this model relates to others in the database.
-
-    Profile.associate = function (models) {
-        // Associating Profile with User in a one-to-one relationship.
-        // - Profile.belongsTo(User): Indicates that each Profile is linked to exactly one User.
-        // - foreignKey: 'userId' ensures the userId field in Profile references the id field in User.
-        // Scenario:
-        // - This relationship lets us easily retrieve a user's profile information.
-        // - For example, when displaying a user's profile page, we can fetch the associated bio using this link.
-        Profile.belongsTo(models.User, { foreignKey: 'userId' });
-    };
-
     // Returning the Profile model for use in other parts of the application.
     // By exporting this model, we can use it to interact with the Profile table, perform CRUD operations, and access associations.
     return Profile;

@@ -49,31 +49,14 @@ module.exports = (sequelize, DataTypes) => {
         // - This is useful for auditing and tracking activity, such as sending notifications or logging when new content is added.
         hooks: {
             afterCreate: async (post) => {
-                const user = await post.getUser();
-                console.log(`New post created by ${user.firstName} ${user.lastName}: Title - "${post.title}", Status - ${post.status}`);
+                // Fetch the user directly using the userId field on the post
+                const user = await sequelize.models.User.findByPk(post.userId);
+                if (user) {
+                    console.log(`New post created by ${user.firstName} ${user.lastName}: Title - "${post.title}", Status - ${post.status}`);
+                }
             }
         }
     });
-
-    // Defining associations for the Post model. Associations describe how models relate to each other.
-    // These relationships help us build more complex queries, retrieve related data, and maintain referential integrity.
-
-    Post.associate = function (models) {
-        // Associating the Post model with the User model in a one-to-many relationship.
-        // Scenario:
-        // - A user can create multiple posts, but each post is associated with only one user (the author).
-        // - This association is set up with `Post.belongsTo(models.User)`, meaning each post references a user.
-        Post.belongsTo(models.User, { foreignKey: 'userId' });
-
-        // Defining a many-to-many relationship between Post and Tag models through the join table 'PostTag'.
-        // Scenario:
-        // - Each post can be associated with multiple tags (e.g., categories or labels like 'Technology' or 'Programming').
-        // - Similarly, a tag can be linked to multiple posts, allowing for content categorization.
-        // - By defining `Post.belongsToMany(models.Tag)` and `Tag.belongsToMany(Post)`, 
-        //   we enable the ability to add, remove, or query tags related to each post.
-        Post.belongsToMany(models.Tag, { through: models.PostTag, foreignKey: 'postId' });
-        models.Tag.belongsToMany(Post, { through: models.PostTag, foreignKey: 'tagId' });
-    };
 
     // Returning the defined Post model so it can be used in other parts of the application.
     // This return statement makes the model available for queries, associations, and other database operations.

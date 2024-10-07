@@ -40,29 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    // Defining associations for the User model.
-    // Associations help describe how this model relates to other models in the application.
-
-    User.associate = function (models) {
-        // One-to-One Relationship with Profile:
-        // - User.hasOne(Profile): Indicates that each User has one Profile.
-        // - foreignKey: 'userId' sets up the relationship, linking the Profile to the User.
-        // - Scenario:
-        //   - This setup allows each user to have additional details, like a bio, stored in a separate Profile table.
-        //   - We use Profile.belongsTo(User) on the Profile model to complete the association, allowing retrieval of user information along with their profile.
-        User.hasOne(models.Profile, { foreignKey: 'userId' });
-        models.Profile.belongsTo(User, { foreignKey: 'userId' });
-
-        // One-to-Many Relationship with Post:
-        // - User.hasMany(Post): Indicates that each User can have multiple Posts.
-        // - foreignKey: 'userId' links each post to a specific user, who acts as the post's author.
-        // - Scenario:
-        //   - This setup models a blogging platform or social media application where each user can create multiple posts.
-        //   - The Post model has Post.belongsTo(User) to complete this association, allowing us to retrieve posts along with the user details of the author.
-        User.hasMany(models.Post, { foreignKey: 'userId' });
-        models.Post.belongsTo(User, { foreignKey: 'userId' });
-    };
-
     // Returning the User model for use in other parts of the application.
     // By exporting this model, we enable interaction with the User table, perform CRUD operations, and manage associations.
     return User;

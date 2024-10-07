@@ -16,6 +16,7 @@ const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const postRoutes = require('./routes/postRoutes');
 const tagRoutes = require('./routes/tagRoutes');
+const postTagRoutes = require('./routes/postTagRoutes')
 
 // Importing custom error handling middleware.
 // Middleware is a function that processes requests as they come in or responses as they go out.
@@ -47,6 +48,8 @@ app.use('/users', userRoutes);
 app.use('/profiles', profileRoutes);
 app.use('/posts', postRoutes);
 app.use('/tags', tagRoutes);
+app.use('/post-tags', postTagRoutes);
+
 
 // Defining the root route ("/") for our application. 
 // This route simply sends a welcome message back to the client when accessed. 

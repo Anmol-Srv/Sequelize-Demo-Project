@@ -1,56 +1,71 @@
-// Importing Sequelize and DataTypes from the sequelize package.
-// Sequelize is an ORM (Object-Relational Mapper) for working with databases through JavaScript code.
-// DataTypes defines the types of data each model attribute can hold (e.g., string, integer).
 const { Sequelize, DataTypes } = require('sequelize');
-
-// Creating a new Sequelize instance to connect to the PostgreSQL database.
-// This instance, named `sequelize`, will allow us to define models and interact with the database.
-// - 'sequelize_demo' is the name of our database.
-// - 'demo_user' is the username used to authenticate with the database.
-// - 'password123' is the password for the database user.
-// The configuration object specifies additional settings for the connection:
-// - `logging: false` disables SQL query logging in the console, making it cleaner.
-// - `host: 'localhost'` indicates the database is hosted locally.
-// - `dialect: 'postgres'` sets the database type to PostgreSQL.
 const sequelize = new Sequelize('sequelize_demo', 'demo_user', 'password123', {
-  logging: false,    // Turns off console logging of raw SQL queries
-  host: 'localhost', // Connects to a local database server
-  dialect: 'postgres' // Specifies PostgreSQL as the database engine
+  logging : false,
+  host: 'localhost',
+  dialect: 'postgres'  // Switch the dialect to 'postgres'
 });
 
-// Defining our models by importing each model file and initializing it with the Sequelize instance.
-// Each model file represents a table in the database and defines the structure of data stored in that table.
-// Here, we have five models: User, Profile, Post, Tag, and PostTag.
-// By passing `sequelize` and `DataTypes` to each model, we ensure they use the same database connection and datatype definitions.
-
-// User model: Represents users in our application. Could store details like name, email, and password.
-// Scenario: The User model is essential for applications where users can log in, create posts, etc.
 const User = require('./user')(sequelize, DataTypes);
-
-// Profile model: Represents additional user information.
-// Scenario: This model could store details like a user bio or profile picture that isn't part of the main User table.
 const Profile = require('./profile')(sequelize, DataTypes);
-
-// Post model: Represents posts created by users, such as blog posts or articles.
-// Scenario: The Post model could have fields like title, content, and creation date, associated with the user who created it.
 const Post = require('./post')(sequelize, DataTypes);
-
-// Tag model: Represents tags used to categorize or label posts.
-// Scenario: Tags help categorize content, allowing users to filter posts by topics (like "Technology" or "Design").
 const Tag = require('./tag')(sequelize, DataTypes);
-
-// PostTag model: Represents the many-to-many relationship between Posts and Tags.
-// Scenario: This model serves as a join table to associate posts with tags. For example, a post on JavaScript could be tagged as "Programming" and "Web Development".
 const PostTag = require('./postTag')(sequelize, DataTypes);
 
-// Exporting the sequelize instance and the models for use throughout the application.
-// By exporting these objects, we can access and interact with the database, define relationships, and query data.
-// Other files in the application can use these models to perform database operations, such as creating, updating, or retrieving data.
+// Associations
+// Associations help describe how this model relates to other models in the application.
+
+// One-to-One Relationship with Profile:
+// - User.hasOne(Profile): Indicates that each User has one Profile.
+// - foreignKey: 'userId' sets up the relationship, linking the Profile to the User.
+// - Scenario:
+//   - This setup allows each user to have additional details, like a bio, stored in a separate Profile table.
+//   - We use Profile.belongsTo(User) on the Profile model to complete the association, allowing retrieval of user information along with their profile.
+User.hasOne(Profile, { foreignKey: 'userId' });
+// One-to-Many Relationship with Post:
+// - User.hasMany(Post): Indicates that each User can have multiple Posts.
+// - foreignKey: 'userId' links each post to a specific user, who acts as the post's author.
+// - Scenario:
+//   - This setup models a blogging platform or social media application where each user can create multiple posts.
+//   - The Post model has Post.belongsTo(User) to complete this association, allowing us to retrieve posts along with the user details of the author.
+User.hasMany(Post, { foreignKey: 'userId' });
+
+// Associating Profile with User in a one-to-one relationship.
+// - Profile.belongsTo(User): Indicates that each Profile is linked to exactly one User.
+// - foreignKey: 'userId' ensures the userId field in Profile references the id field in User.
+// Scenario:
+// - This relationship lets us easily retrieve a user's profile information.
+// - For example, when displaying a user's profile page, we can fetch the associated bio using this link.
+Profile.belongsTo(User, { foreignKey: 'userId' });
+
+// Associating the Post model with the User model in a one-to-many relationship.
+// Scenario:
+// - A user can create multiple posts, but each post is associated with only one user (the author).
+// - This association is set up with `Post.belongsTo(models.User)`, meaning each post references a user.
+Post.belongsTo(User, { foreignKey: 'userId' });
+// Defining a many-to-many relationship between Post and Tag models through the join table 'PostTag'.
+// Scenario:
+// - Each post can be associated with multiple tags (e.g., categories or labels like 'Technology' or 'Programming').
+// - Similarly, a tag can be linked to multiple posts, allowing for content categorization.
+// - By defining `Post.belongsToMany(models.Tag)` and `Tag.belongsToMany(Post)`,
+//   we enable the ability to add, remove, or query tags related to each post.
+Post.belongsToMany(Tag, { through: PostTag, foreignKey: 'postId' });
+
+// Associating Tag with Post in a many-to-many relationship, using the PostTag join table.
+// - Tag.belongsToMany(models.Post): Indicates that each Tag can be linked to multiple Posts.
+// - through: models.PostTag specifies that the relationship is managed by the PostTag table.
+// - foreignKey: 'tagId' sets the key in the PostTag table that references the Tag.
+// Scenario:
+// - This association enables posts to be organized by multiple tags.
+// - It also allows tags to group various posts under the same category, such as "Technology" or "Health".
+Tag.belongsToMany(Post, { through: PostTag, foreignKey: 'tagId' });
+
+// Initialize associations after all models are defined
+
 module.exports = {
-  sequelize, // The Sequelize instance for interacting with the database
-  User,      // The User model for managing user data
-  Profile,   // The Profile model for managing additional user details
-  Post,      // The Post model for managing blog posts or articles
-  Tag,       // The Tag model for managing categories or labels for posts
-  PostTag    // The PostTag model for managing associations between Posts and Tags
+  sequelize,
+  User,
+  Profile,
+  Post,
+  Tag,
+  PostTag
 };
