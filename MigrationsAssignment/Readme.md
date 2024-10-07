@@ -1,7 +1,3 @@
-Here’s a detailed assignment designed to introduce learners to Sequelize migrations. This will cover the basics of what migrations are, why they’re useful, and guide learners through creating a migration to add a `createdAt` column to the `Posts` table, populating it with the current date and time.
-
----
-
 ## Assignment: Understanding and Creating Migrations in Sequelize
 
 ### What are Migrations?
