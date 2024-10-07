@@ -1,2 +1,7 @@
+# The .gitignore file specifies which files and directories should be ignored 
+# by Git, meaning they won't be tracked or included in version control. 
+# This helps to exclude sensitive information and unnecessary files 
+# (such as dependencies and environment-specific configurations) 
+# from the repository.
 /node_modules
 .env

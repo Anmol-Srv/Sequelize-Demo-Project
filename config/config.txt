@@ -1,0 +1,34 @@
+{
+  // Configuration for the development environment
+  // - This is where you'll define settings for local development.
+  // - These settings allow you to connect to your local database.
+  "development": {
+    "username": "demo_user",       // Database username for local development
+    "password": "password123",     // Database password for local development
+    "database": "sequelize_demo",  // Name of the local development database
+    "host": "127.0.0.1",           // Host address, typically localhost for development
+    "dialect": "mysql"             // Database dialect, defining the type of database (e.g., mysql, postgres)
+  },
+
+  // Configuration for the test environment
+  // - Used for running automated tests without affecting development or production databases.
+  // - Similar setup to development but often uses a separate test database.
+  "test": {
+    "username": "demo_user",       // Database username for testing
+    "password": "password123",     // Database password for testing
+    "database": "sequelize_test",  // Name of the test database
+    "host": "127.0.0.1",           // Host address, typically localhost
+    "dialect": "mysql"             // Database dialect, same as development for consistency
+  },
+
+  // Configuration for the production environment
+  // - Used when deploying the application live.
+  // - Credentials and database settings are often different for security and scalability.
+  "production": {
+    "username": "demo_user",           // Database username for production
+    "password": "password123",         // Database password for production
+    "database": "sequelize_production",// Name of the production database
+    "host": "127.0.0.1",               // Host address, may differ in actual production (e.g., cloud-hosted database)
+    "dialect": "mysql"                 // Database dialect, set to mysql for this configuration
+  }
+}
